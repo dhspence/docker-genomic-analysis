@@ -61,25 +61,6 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.3.1/samtools-1
     cd / && \
     rm -rf /tmp/samtools-1.3.1
 
-###############
-#bam-readcount#
-###############
-ENV SAMTOOLS_ROOT=/opt/samtools
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        cmake \
-        patch && \
-    mkdir /opt/bam-readcount && \
-    cd /opt/bam-readcount && \
-    git clone https://github.com/genome/bam-readcount.git /tmp/bam-readcount-0.7.4 && \
-    git -C /tmp/bam-readcount-0.7.4 checkout v0.7.4 && \
-    cmake /tmp/bam-readcount-0.7.4 && \
-    make && \
-    rm -rf /tmp/bam-readcount-0.7.4 && \
-    ln -s /opt/bam-readcount/bin/bam-readcount /usr/bin/bam-readcount
-
-#note - this script needs cyvcf - installed in the python secetion!
-COPY bam_readcount_helper.py /usr/bin/bam_readcount_helper.py
-
 ################
 #bcftools 1.3.1#
 ################
@@ -123,9 +104,6 @@ RUN apt-get update && apt-get install ant --no-install-recommends -y && \
     rm -rf src && \
     rm -rf lib && \
     rm build.xml
-
-COPY split_interval_list_helper.pl /usr/bin/split_interval_list_helper.pl
-
 
 ##############
 ## bedtools ##
