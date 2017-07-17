@@ -1,5 +1,5 @@
 FROM ubuntu:xenial
-MAINTAINER Chris Miller <c.a.miller@wustl.edu>
+MAINTAINER David Spencer <dspencer@wustl.edu>
 
 LABEL Image for basic ad-hoc bioinformatic analyses
 
@@ -126,21 +126,6 @@ RUN apt-get update && apt-get install ant --no-install-recommends -y && \
 COPY split_interval_list_helper.pl /usr/bin/split_interval_list_helper.pl
 
 
-#############
-## IGV 3.0 ##
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    software-properties-common \
-    glib-networking-common && \
-    mkdir -p /igv && \
-    cd /igv && \
-    wget http://data.broadinstitute.org/igv/projects/downloads/3.0_beta/IGV_3.0_beta.zip && \
-    unzip IGV_3.0_beta.zip && \
-    cd IGV_3.0_beta && \
-    sed -i 's/Xmx4000/Xmx8000/g' igv.sh && \
-    cd /usr/bin && \
-    ln -s /igv/IGV_3.0_beta/igv.sh ./igv
-
 ##############
 ## bedtools ##
 
@@ -150,7 +135,6 @@ RUN git clone https://github.com/arq5x/bedtools2.git && \
     git checkout v2.25.0 && \
     make && \
     ln -s /usr/local/bedtools2/bin/* /usr/local/bin/
-
 
 ##############
 ## vcftools ##
@@ -177,7 +161,6 @@ RUN mkdir -p /tmp/ucsc && \
     wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigBedToBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigAverageOverBed http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bigWigToBedGraph http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/wigToBigWig && \
     chmod ugo+x * && \
     mv * /usr/bin/
-
 
 ############################
 # R, bioconductor packages #
@@ -293,14 +276,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends locales && \
 
    ## install r packages, bioconductor, etc ##
    ADD rpackages.R /tmp/
-   RUN R -f /tmp/rpackages.R && \
-   ## install fishplot ##
-   cd /tmp/ && \
-    wget https://github.com/chrisamiller/fishplot/archive/v0.4.tar.gz && \
-    mv v0.4.tar.gz fishplot_0.4.tar.gz && \
-    R CMD INSTALL fishplot_0.4.tar.gz && \
-    cd && rm -rf /tmp/fishplot_0.4.tar.gz
-
+   RUN R -f /tmp/rpackages.R 
+   
    ## Clean up
    RUN cd / && \
    rm -rf /tmp/* && \
