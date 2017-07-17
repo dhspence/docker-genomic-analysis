@@ -58,6 +58,7 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.3.1/samtools-1
     ./configure --with-htslib=$HTSLIB_INSTALL_DIR --prefix=$SAMTOOLS_INSTALL_DIR && \
     make && \
     make install && \
+    ln -s /opt/samtools/bin/* /usr/local/bin/
     cd / && \
     rm -rf /tmp/samtools-1.3.1
 
