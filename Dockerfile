@@ -28,7 +28,8 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     unzip \
     wget \
     zip \
-    zlib1g-dev
+    zlib1g-dev \
+    bc
 
 ##############
 #HTSlib 1.3.2#
