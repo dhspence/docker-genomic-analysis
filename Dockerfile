@@ -58,7 +58,7 @@ RUN wget https://github.com/samtools/samtools/releases/download/1.3.1/samtools-1
     ./configure --with-htslib=$HTSLIB_INSTALL_DIR --prefix=$SAMTOOLS_INSTALL_DIR && \
     make && \
     make install && \
-    ln -s /opt/samtools/bin/* /usr/local/bin/
+    ln -s /opt/samtools/bin/* /usr/local/bin/ && \
     cd / && \
     rm -rf /tmp/samtools-1.3.1
 
@@ -72,6 +72,7 @@ RUN wget https://github.com/samtools/bcftools/releases/download/1.3.1/bcftools-1
     cd /tmp/bcftools-1.3.1 && \
     make prefix=$BCFTOOLS_INSTALL_DIR && \
     make prefix=$BCFTOOLS_INSTALL_DIR install && \
+    ln -s /opt/bcftools/bin/* /usr/local/bin/ && \
     cd / && \
     rm -rf /tmp/bcftools-1.3.1
 
@@ -101,6 +102,8 @@ RUN apt-get update && apt-get install ant --no-install-recommends -y && \
     mv dist/picard.jar picard.jar && \
     mv src/scripts/picard/docker_helper.sh docker_helper.sh && \
     ant clean && \
+    echo -e '#!/bin/bash'"\n"'java -Xmx16g -jar ~dspencer/programs/picard/picard-v2.8.1.jar $@' > /usr/local/bin/picard && \
+    chmod a+x /usr/local/bin/picard && \
     rm -rf htsjdk && \
     rm -rf src && \
     rm -rf lib && \
