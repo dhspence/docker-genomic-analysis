@@ -102,7 +102,7 @@ RUN apt-get update && apt-get install ant --no-install-recommends -y && \
     mv dist/picard.jar picard.jar && \
     mv src/scripts/picard/docker_helper.sh docker_helper.sh && \
     ant clean && \
-    echo -e '#!/bin/bash'"\n"'java -Xmx16g -jar /usr/bin/picard/picard.jar $@' > /usr/local/bin/picard && \
+    echo '#!/bin/bash'"\n"'java -Xmx16g -jar /usr/picard/picard.jar $@' > /usr/local/bin/picard && \
     chmod a+x /usr/local/bin/picard && \
     rm -rf htsjdk && \
     rm -rf src && \
