@@ -39,7 +39,7 @@ ENV HTSLIB_INSTALL_DIR=/opt/htslib
 WORKDIR /tmp
 RUN wget https://github.com/samtools/htslib/releases/download/1.5/htslib-1.5.tar.bz2 && \
     tar --bzip2 -xvf htslib-1.5.tar.bz2 && \
-    cd /tmp/htslib-1.5.tar.bz2 && \
+    cd /tmp/htslib-1.5 && \
     ./configure  --enable-plugins --prefix=$HTSLIB_INSTALL_DIR && \
     make && \
     make install && \
