@@ -32,14 +32,14 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     bc
 
 ##############
-#HTSlib 1.3.2#
+#HTSlib 1.5#
 ##############
 ENV HTSLIB_INSTALL_DIR=/opt/htslib
 
 WORKDIR /tmp
-RUN wget https://github.com/samtools/htslib/releases/download/1.3.2/htslib-1.3.2.tar.bz2 && \
-    tar --bzip2 -xvf htslib-1.3.2.tar.bz2 && \
-    cd /tmp/htslib-1.3.2 && \
+RUN wget https://github.com/samtools/htslib/releases/download/1.5/htslib-1.5.tar.bz2 && \
+    tar --bzip2 -xvf htslib-1.5.tar.bz2 && \
+    cd /tmp/htslib-1.5.tar.bz2 && \
     ./configure  --enable-plugins --prefix=$HTSLIB_INSTALL_DIR && \
     make && \
     make install && \
@@ -47,40 +47,40 @@ RUN wget https://github.com/samtools/htslib/releases/download/1.3.2/htslib-1.3.2
     ln -s $HTSLIB_INSTALL_DIR/bin/tabix /usr/bin/tabix
 
 ################
-#Samtools 1.3.1#
+#Samtools 1.5#
 ################
 ENV SAMTOOLS_INSTALL_DIR=/opt/samtools
 
 WORKDIR /tmp
-RUN wget https://github.com/samtools/samtools/releases/download/1.3.1/samtools-1.3.1.tar.bz2 && \
-    tar --bzip2 -xf samtools-1.3.1.tar.bz2 && \
-    cd /tmp/samtools-1.3.1 && \
+RUN wget https://github.com/samtools/samtools/releases/download/1.5/samtools-1.5.tar.bz2 && \
+    tar --bzip2 -xf samtools-1.5.tar.bz2 && \
+    cd /tmp/samtools-1.5 && \
     ./configure --with-htslib=$HTSLIB_INSTALL_DIR --prefix=$SAMTOOLS_INSTALL_DIR && \
     make && \
     make install && \
     ln -s /opt/samtools/bin/* /usr/local/bin/ && \
     cd / && \
-    rm -rf /tmp/samtools-1.3.1
+    rm -rf /tmp/samtools-1.5
 
 ################
-#bcftools 1.3.1#
+#bcftools 1.5#
 ################
 ENV BCFTOOLS_INSTALL_DIR=/opt/bcftools
 WORKDIR /tmp
-RUN wget https://github.com/samtools/bcftools/releases/download/1.3.1/bcftools-1.3.1.tar.bz2 && \
-    tar --bzip2 -xf bcftools-1.3.1.tar.bz2 && \
-    cd /tmp/bcftools-1.3.1 && \
+RUN wget https://github.com/samtools/bcftools/releases/download/1.5/bcftools-1.5.tar.bz2 && \
+    tar --bzip2 -xf bcftools-1.5.tar.bz2 && \
+    cd /tmp/bcftools-1.5 && \
     make prefix=$BCFTOOLS_INSTALL_DIR && \
     make prefix=$BCFTOOLS_INSTALL_DIR install && \
     ln -s /opt/bcftools/bin/* /usr/local/bin/ && \
     cd / && \
-    rm -rf /tmp/bcftools-1.3.1
+    rm -rf /tmp/bcftools-1.5
 
 
 ##############
-#Picard 2.4.1#
+#Picard 2.12.1#
 ##############
-ENV picard_version 2.4.1
+ENV picard_version 2.12.1
 
 # Assumes Dockerfile lives in root of the git repo. Pull source files into
 # container
