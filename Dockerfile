@@ -4,6 +4,14 @@ MAINTAINER David Spencer <dspencer@wustl.edu>
 LABEL Image for basic ad-hoc bioinformatic analyses
 
 #some basic tools
+RUN apt-get update && apt-get install -y --no-install-recommends locales && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen en_US.UTF-8 && \
+    LC_ALL=en_US.UTF-8 && \
+    LANG=en_US.UTF-8 && \
+    /usr/sbin/update-locale LANG=en_US.UTF-8 && \
+    TERM=xterm
+
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
     build-essential \
     bzip2 \
@@ -28,6 +36,52 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     unzip \
     wget \
     zip \
+    libbz2-dev \
+    apt-get install -y --no-install-recommends \
+    bash-completion \
+    ca-certificates \
+    file \
+    fonts-texgyre \
+    g++ \
+    gfortran \
+    gsfonts \
+    libbz2-1.0 \
+    libcurl3 \
+    libicu55 \
+    libjpeg-turbo8 \
+    libopenblas-dev \
+    libpangocairo-1.0-0 \
+    libpcre3 \
+    libpng12-0 \
+    libtiff5 \
+    liblzma5 \
+    locales \
+    zlib1g \
+    libbz2-dev \
+    libcairo2-dev \
+    libcurl4-openssl-dev \
+    libpango1.0-dev \
+    libjpeg-dev \
+    libicu-dev \
+    libpcre3-dev \
+    libpng-dev \
+    libreadline-dev \
+    libtiff5-dev \
+    liblzma-dev \
+    libx11-dev \
+    libxt-dev \
+    perl \
+    tcl8.5-dev \
+    tk8.5-dev \
+    texinfo \
+    texlive-extra-utils \
+    texlive-fonts-recommended \
+    texlive-fonts-extra \
+    texlive-latex-recommended \
+    x11proto-core-dev \
+    xauth \
+    xfonts-base \
+    xvfb \
     zlib1g-dev \
     bc
 
@@ -149,65 +203,11 @@ RUN mkdir -p /tmp/ucsc && \
 # R, bioconductor packages #
 # from https://raw.githubusercontent.com/rocker-org/rocker-versioned/master/r-ver/3.4.0/Dockerfile
 # we'll pin to 3.4.0 for now
-
 ARG R_VERSION
 ARG BUILD_DATE
 ENV BUILD_DATE 2017-06-20
 ENV R_VERSION=${R_VERSION:-3.4.0}
-RUN apt-get update && apt-get install -y --no-install-recommends locales && \
-    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
-    locale-gen en_US.UTF-8 && \
-    LC_ALL=en_US.UTF-8 && \
-    LANG=en_US.UTF-8 && \
-    /usr/sbin/update-locale LANG=en_US.UTF-8 && \
-    TERM=xterm && \
-    apt-get install -y --no-install-recommends \
-    bash-completion \
-    ca-certificates \
-    file \
-    fonts-texgyre \
-    g++ \
-    gfortran \
-    gsfonts \
-    libbz2-1.0 \
-    libcurl3 \
-    libicu55 \
-    libjpeg-turbo8 \
-    libopenblas-dev \
-    libpangocairo-1.0-0 \
-    libpcre3 \
-    libpng12-0 \
-    libtiff5 \
-    liblzma5 \
-    locales \
-    zlib1g \
-    libbz2-dev \
-    libcairo2-dev \
-    libcurl4-openssl-dev \
-    libpango1.0-dev \
-    libjpeg-dev \
-    libicu-dev \
-    libpcre3-dev \
-    libpng-dev \
-    libreadline-dev \
-    libtiff5-dev \
-    liblzma-dev \
-    libx11-dev \
-    libxt-dev \
-    perl \
-    tcl8.5-dev \
-    tk8.5-dev \
-    texinfo \
-    texlive-extra-utils \
-    texlive-fonts-recommended \
-    texlive-fonts-extra \
-    texlive-latex-recommended \
-    x11proto-core-dev \
-    xauth \
-    xfonts-base \
-    xvfb \
-    zlib1g-dev && \
-    cd /tmp/ && \
+RUN cd /tmp/ && \
     ## Download source code
     curl -O https://cran.r-project.org/src/base/R-3/R-${R_VERSION}.tar.gz && \
     ## Extract source code
