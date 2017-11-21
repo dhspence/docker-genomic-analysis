@@ -37,7 +37,6 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     wget \
     zip \
     libbz2-dev \
-    apt-get install -y --no-install-recommends \
     bash-completion \
     ca-certificates \
     file \
