@@ -131,9 +131,9 @@ RUN wget https://github.com/samtools/bcftools/releases/download/1.5/bcftools-1.5
 
 
 ##############
-#Picard 2.12.1#
+#Picard 2.13.1#
 ##############
-ENV picard_version 2.12.1
+ENV picard_version 2.13.1
 
 # Assumes Dockerfile lives in root of the git repo. Pull source files into
 # container
