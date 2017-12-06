@@ -151,10 +151,10 @@ RUN apt-get update && apt-get install ant --no-install-recommends -y && \
     git checkout tags/${picard_version} && \
     cd .. && \
     # Build the distribution jar, clean up everything else
+    ant clean all && \
     mv dist/picard.jar picard.jar && \
     mv src/scripts/picard/docker_helper.sh docker_helper.sh && \
-    echo '#!/bin/bash'"\n"'java -Xmx16g -jar /usr/picard/picard.jar $@' > /usr/local/bin/picard && \
-    chmod a+x /usr/local/bin/picard && \
+    ant clean && \
     rm -rf htsjdk && \
     rm -rf src && \
     rm -rf lib && \
