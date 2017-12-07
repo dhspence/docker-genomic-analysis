@@ -141,24 +141,11 @@ RUN apt-get update && apt-get install ant --no-install-recommends -y && \
     cd /usr/ && \
     git config --global http.sslVerify false && \
     git clone --recursive https://github.com/broadinstitute/picard.git && \
-    cd /usr/picard && \
+    cd picard && \
     git checkout tags/${picard_version} && \
-    cd /usr/picard && \
-    # Clone out htsjdk. First turn off git ssl verification
-    git config --global http.sslVerify false && \
-    git clone https://github.com/samtools/htsjdk.git && \
-    cd htsjdk && \
-    git checkout tags/${picard_version} && \
-    cd .. && \
-    # Build the distribution jar, clean up everything else
-    ant clean all && \
-    mv dist/picard.jar picard.jar && \
-    mv src/scripts/picard/docker_helper.sh docker_helper.sh && \
-    ant clean && \
-    rm -rf htsjdk && \
-    rm -rf src && \
-    rm -rf lib && \
-    rm build.xml
+    ./gradlew shadowJar && ./gradlew test && ./gradlew clean && cp build/libs/picard.jar /usr/local/bin/ && \
+    echo '#!/bin/bash'"\n"'java -Xmx16g -jar /usr/local/bin/picard.jar $@' > /usr/local/bin/picard && \
+    chmod a+x /usr/local/bin/picard
 
 ##############
 ## bedtools ##
