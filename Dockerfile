@@ -147,8 +147,15 @@ RUN apt-get update && apt-get install ant --no-install-recommends -y && \
     git config --global http.sslVerify false && \
     git clone --recursive https://github.com/broadinstitute/picard.git && \
     cd picard && \
-    git checkout tags/${picard_version} && \
-    ./gradlew shadowJar && ./gradlew clean && cp build/libs/picard.jar /usr/local/bin/ && \
+    ./gradlew shadowJar && \
+    mv build/libs/picard.jar picard.jar && \
+    ./gradlew clean && \
+    rm -rf src && \
+    rm -rf gradle && \
+    rm -rf .git && \
+    rm gradlew && \
+    rm build.gradle && \
+    cp picard.jar /usr/local/bin/ && \
     echo '#!/bin/bash'"\n"'java -Xmx16g -jar /usr/local/bin/picard.jar $@' > /usr/local/bin/picard && \
     chmod a+x /usr/local/bin/picard
 
