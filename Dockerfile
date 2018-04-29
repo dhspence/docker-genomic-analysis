@@ -84,6 +84,11 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     zlib1g-dev \
     bc
 
+#
+# Some perl modules
+#
+RUN cpan install Statistics::Basic && cpan install JSON
+
 ##############
 #HTSlib 1.5#
 ##############
