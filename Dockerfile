@@ -84,11 +84,6 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     zlib1g-dev \
     bc
 
-#
-# Some perl modules
-#
-RUN cpan install Statistics::Basic && cpan install JSON
-
 ##############
 #HTSlib 1.5#
 ##############
@@ -136,9 +131,9 @@ RUN wget https://github.com/samtools/bcftools/releases/download/1.5/bcftools-1.5
 
 
 ##############
-#Picard 2.13.1#
+#Picard 2.18.9#
 ##############
-ENV picard_version 2.13.1
+ENV picard_version 2.18.9
 
 # Assumes Dockerfile lives in root of the git repo. Pull source files into
 # container
@@ -146,26 +141,20 @@ RUN apt-get update && apt-get install ant --no-install-recommends -y && \
     cd /usr/ && \
     git config --global http.sslVerify false && \
     git clone --recursive https://github.com/broadinstitute/picard.git && \
-    cd picard && \
+    cd /usr/picard && \
+    git checkout tags/${picard_version} && \
     ./gradlew shadowJar && \
-    mv build/libs/picard.jar picard.jar && \
-    ./gradlew clean && \
-    rm -rf src && \
-    rm -rf gradle && \
-    rm -rf .git && \
-    rm gradlew && \
-    rm build.gradle && \
-    cp picard.jar /usr/local/bin/ && \
-    echo '#!/bin/bash'"\n"'java -Xmx16g -jar /usr/local/bin/picard.jar $@' > /usr/local/bin/picard && \
+    cp ./build/libs/picard.jar . && \
+    echo -e '#!/bin/bash'"\n"'java -Xmx16g -jar /usr/picard/picard.jar $@' > /usr/local/bin/picard && \
     chmod a+x /usr/local/bin/picard
-
+    
 ##############
 ## bedtools ##
 
 WORKDIR /usr/local
 RUN git clone https://github.com/arq5x/bedtools2.git && \
     cd /usr/local/bedtools2 && \
-    git checkout v2.25.0 && \
+    git checkout v2.27.0 && \
     make && \
     ln -s /usr/local/bedtools2/bin/* /usr/local/bin/
 
@@ -197,12 +186,10 @@ RUN mkdir -p /tmp/ucsc && \
 
 ############################
 # R, bioconductor packages #
-# from https://raw.githubusercontent.com/rocker-org/rocker-versioned/master/r-ver/3.4.0/Dockerfile
-# we'll pin to 3.4.0 for now
 ARG R_VERSION
 ARG BUILD_DATE
 ENV BUILD_DATE 2017-06-20
-ENV R_VERSION=${R_VERSION:-3.4.0}
+ENV R_VERSION=${R_VERSION:-3.5.3}
 RUN cd /tmp/ && \
     ## Download source code
     curl -O https://cran.r-project.org/src/base/R-3/R-${R_VERSION}.tar.gz && \
@@ -241,14 +228,8 @@ RUN cd /tmp/ && \
     ## Fix library path
     echo "R_LIBS_USER='/usr/local/lib/R/site-library'" >> /usr/local/lib/R/etc/Renviron && \
     echo "R_LIBS=\${R_LIBS-'/usr/local/lib/R/site-library:/usr/local/lib/R/library:/usr/lib/R/library'}" >> /usr/local/lib/R/etc/Renviron && \
-    ## install packages from date-locked MRAN snapshot of CRAN
-    [ -z "$BUILD_DATE" ] && BUILD_DATE=$(TZ="America/Los_Angeles" date -I) || true && \
-    MRAN=https://mran.microsoft.com/snapshot/${BUILD_DATE} && \
-    echo MRAN=$MRAN >> /etc/environment && \
-    export MRAN=$MRAN && \
-    echo "options(repos = c(CRAN='$MRAN'), download.file.method = 'libcurl')" >> /usr/local/lib/R/etc/Rprofile.site && \
     ## Use littler installation scripts
-    Rscript -e "install.packages(c('littler', 'docopt'), repo = '$MRAN')" && \
+    Rscript -e "install.packages(c('littler', 'docopt'))" && \
     ln -s /usr/local/lib/R/site-library/littler/examples/install2.r /usr/local/bin/install2.r && \
     ln -s /usr/local/lib/R/site-library/littler/examples/installGithub.r /usr/local/bin/installGithub.r && \
     ln -s /usr/local/lib/R/site-library/littler/bin/r /usr/local/bin/r
@@ -335,6 +316,10 @@ RUN dpkg-reconfigure --frontend noninteractive tzdata
 # some other utils
 RUN apt-get update && apt-get install -y --no-install-recommends gawk openssh-client grep evince && apt-get clean all
 
+RUN cpan install Statistics::Basic && cpan install JSON && cpan install List::Util
+
+RUN pip install hic2cool && pip install cooler
+
 RUN mkdir /tmp/bin
-ENV PATH=/bin:/usr/bin:${PATH}
+ENV PATH=/bin:/usr/bin:/usr/local/bin:/opt/conda/bin/:${PATH}
 
