@@ -267,41 +267,47 @@ RUN cd /tmp && \
 RUN conda install --yes 'pip' && \
     conda clean -tipsy && \
     #dependencies sometimes get weird - installing each on it's own line seems to help
-    pip install numpy==1.13.0 && \ 
-    pip install scipy==0.19.0 && \
-    pip install cruzdb==0.5.6 && \
-    pip install cython==0.25.2 && \
-    pip install pyensembl==1.1.0 && \
-    pip install pyfaidx==0.4.9.2 && \
-    pip install pybedtools==0.7.10 && \
-    pip install cyvcf2==0.7.4 && \
-    pip install intervaltree_bio==1.0.1 && \
-    pip install pandas==0.20.2 && \
-    pip install scipy==0.19.0 && \
-    pip install pysam==0.11.2.2 && \
-    pip install seaborn==0.7.1 && \
-    pip install scikit-learn==0.18.2
+    pip install numpy && \
+    pip install cruzdb && \
+    pip install cython && \
+    pip install pyensembl && \
+    pip install pyfaidx && \
+    pip install pybedtools && \
+    pip install cyvcf2 && \
+    pip install intervaltree_bio && \
+    pip install pandas && \
+    pip install scipy && \
+    pip install seaborn && \
+    pip install scikit-learn && \
+    pip install pysam==0.12.0.1
 
 # Install Python 2 
 RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 'pip' && \
     conda clean -tipsy && \
     /bin/bash -c "source activate python2 && \
     #dependencies sometimes get weird - installing each on it's own line seems to help
-    pip install numpy==1.13.0 && \ 
-    pip install scipy==0.19.0 && \
-    pip install cruzdb==0.5.6 && \
-    pip install cython==0.25.2 && \
-    pip install pyensembl==1.1.0 && \
-    pip install pyfaidx==0.4.9.2 && \
-    pip install pybedtools==0.7.10 && \
-    pip install cyvcf2==0.7.4 && \
-    pip install intervaltree_bio==1.0.1 && \
-    pip install pandas==0.20.2 && \
-    pip install scipy==0.19.0 && \
-    pip install pysam==0.11.2.2 && \
-    pip install seaborn==0.7.1 && \
-    pip install scikit-learn==0.18.2 && \
+    pip install numpy && \
+    pip install cruzdb && \
+    pip install cython && \
+    pip install pyensembl && \
+    pip install pyfaidx && \
+    pip install pybedtools && \
+    pip install cyvcf2 && \
+    pip install intervaltree_bio && \
+    pip install pandas && \
+    pip install scipy && \
+    pip install seaborn && \
+    pip install scikit-learn && \
     source deactivate"
+
+#RUN conda config --add channels defaults && \
+#    conda config --add channels conda-forge && \
+#    conda config --add channels bioconda && \
+#    conda install pysam
+
+#RUN git clone --single-branch --branch cram-pileup-fix https://github.com/jmarshall/pysam.git && \
+#    cd pysam && \
+#    /opt/conda/bin/python setup.py install
 
 # needed for MGI data mounts
 RUN apt-get update && apt-get install -y libnss-sss && apt-get clean all
