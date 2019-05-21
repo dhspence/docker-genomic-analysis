@@ -305,9 +305,9 @@ RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 'pip' && \
 #    conda config --add channels bioconda && \
 #    conda install pysam
 
-#RUN git clone --single-branch --branch cram-pileup-fix https://github.com/jmarshall/pysam.git && \
-#    cd pysam && \
-#    /opt/conda/bin/python setup.py install
+RUN git clone --single-branch --branch cram-pileup-fix https://github.com/jmarshall/pysam.git && \
+    cd pysam && \
+    /opt/conda/bin/python setup.py install
 
 # needed for MGI data mounts
 RUN apt-get update && apt-get install -y libnss-sss && apt-get clean all
