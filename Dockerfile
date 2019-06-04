@@ -189,7 +189,7 @@ RUN mkdir -p /tmp/ucsc && \
 ARG R_VERSION
 ARG BUILD_DATE
 ENV BUILD_DATE 2017-06-20
-ENV R_VERSION=${R_VERSION:-3.5.3}
+ENV R_VERSION=${R_VERSION:-3.6.0}
 RUN cd /tmp/ && \
     ## Download source code
     curl -O https://cran.r-project.org/src/base/R-3/R-${R_VERSION}.tar.gz && \
