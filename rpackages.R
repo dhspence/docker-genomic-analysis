@@ -1,5 +1,5 @@
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install()
-BiocManager::install(c("GenVisR","GenomicAlignments","DEseq2","bsseq")
+BiocManager::install(c("GenVisR","GenomicAlignments","DEseq2","bsseq"))
 install.packages(c("tidyverse","ggplot2","Hmisc","plotrix","png","scales","vcfR","scales","data.table"))
