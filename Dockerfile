@@ -322,7 +322,7 @@ RUN dpkg-reconfigure --frontend noninteractive tzdata
 # some other utils
 RUN apt-get update && apt-get install -y --no-install-recommends gawk openssh-client grep evince && apt-get clean all
 
-RUN cpan install Statistics::Basic && cpan install JSON && cpan install List::Util
+RUN cpan install Statistics::Basic && cpan install JSON && cpan install List::Util && cpan install YAML::Tiny
 
 RUN pip install hic2cool && pip install cooler
 
