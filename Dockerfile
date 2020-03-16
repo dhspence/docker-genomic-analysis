@@ -305,7 +305,7 @@ RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 'pip' && \
 #    conda config --add channels bioconda && \
 #    conda install pysam
 
-RUN git clone --single-branch --branch cram-pileup-fix https://github.com/jmarshall/pysam.git && \
+RUN git clone https://github.com/pysam-developers/pysam.git && \
     cd pysam && \
     /opt/conda/bin/python setup.py install
 
