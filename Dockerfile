@@ -256,7 +256,7 @@ ENV PATH $CONDA_DIR/bin:$PATH
 # Install conda
 RUN cd /tmp && \
     mkdir -p $CONDA_DIR && \
-    curl -s https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh -o miniconda.sh && \
+    curl -s https://repo.anaconda.com/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh -o miniconda.sh && \
     /bin/bash miniconda.sh -f -b -p $CONDA_DIR && \
     rm miniconda.sh && \
     $CONDA_DIR/bin/conda config --system --add channels conda-forge && \
