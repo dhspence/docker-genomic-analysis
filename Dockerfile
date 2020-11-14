@@ -145,7 +145,7 @@ RUN apt-get update && apt-get install ant --no-install-recommends -y && \
     git checkout tags/${picard_version} && \
     ./gradlew shadowJar && \
     cp ./build/libs/picard.jar . && \
-    echo -e '#!/bin/bash'"\n"'java -Xmx16g -jar /usr/picard/picard.jar $@' > /usr/local/bin/picard && \
+    echo -e "#!/bin/bash\njava -Xmx16g -jar /usr/picard/picard.jar $@" > /usr/local/bin/picard && \
     chmod a+x /usr/local/bin/picard
     
 ##############
